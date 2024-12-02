@@ -15,4 +15,7 @@ export class DatabaseService {
     findAllUser(){
         return this.userServo.findAll();
     }
+    Login(loginName:string,pass:string){
+        return this.userServo.findByCred(loginName,pass);
+    }
 }
