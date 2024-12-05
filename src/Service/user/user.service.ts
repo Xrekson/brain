@@ -26,7 +26,7 @@ export class UserService {
         return this.database.findAllUser();
     }
     getUserByUser(loginName:string,password:string) {
-        return this.database.Login(loginName,password);
+        return this.database.loginUser(loginName,password);
     }
     async login(loginName:string,password:string) {
         if (!loginName) {
@@ -35,10 +35,41 @@ export class UserService {
         if (!password) {
             return { error: 'Please provide password!' };
         }
-        let data = await this.database.Login(loginName, password);
-        let payload = { sub: data.id, data: data.loginNane };
-        return {
-            access_token: await this.jwtService.signAsync(payload),
-          };
+        let data = await this.database.loginUser(loginName, password);
+        if(data){
+            let payload = { sub: data.id, data: data.loginName };
+            return {
+                access_token: await this.jwtService.signAsync(payload),
+              };
+        }
+        return {error:"Wrong Crendentials!"};
+    }
+    async logout(loginName:string,password:string) {
+        if (!loginName) {
+            return { error: 'Please provide login name!' };
+        }
+        if (!password) {
+            return { error: 'Please provide password!' };
+        }
+        let data = await this.database.loginUser(loginName, password);
+        if(data){
+            let payload = { sub: data.id, data: data.loginName };
+            return {
+                access_token: await this.jwtService.signAsync(payload),
+              };
+        }
+        return {error:"Wrong Crendentials!"};
+    }
+    updateUserByCred(updatedData: any){
+        if (!updatedData.id) {
+            return { error: 'Please provide ID!' };
+        }
+        if (!updatedData.pass) {
+            return { error: 'Please provide password!' };
+        }
+        if (!updatedData) {
+            return { error: 'Please provide info to update!' };
+        }
+        return this.database.updateUser(updatedData.id,updatedData.pass,updatedData);
     }
 }

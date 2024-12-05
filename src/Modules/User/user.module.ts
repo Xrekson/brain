@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { DatabaseModule } from 'src/Database/database/database.module';
-import { UserController } from './user.controller';
+import { UserController } from 'src/Contollers/user/user.controller';
 import { UserService } from 'src/Service/user/user.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
@@ -9,11 +9,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from 'src/Strategy/jwt.strategy';
 
 @Module({
-    imports: [DatabaseModule,ConfigModule.forRoot(),JwtModule.register({
-        global: true,
-        secret: process.env.JWT,
-        signOptions: { expiresIn: process.env.EXPIRE },
-      }),PassportModule],
+    imports: [DatabaseModule,ConfigModule.forRoot(),PassportModule],
     controllers:[UserController],
     providers:[UserService, LocalStrategy,JwtStrategy]
 })
