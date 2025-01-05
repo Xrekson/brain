@@ -16,6 +16,9 @@ export class DatabaseService {
     findAllUser(){
         return this.userServo.findAll();
     }
+    findAllUserName(){
+        return this.userServo.findAllUserName();
+    }
     loginUser(loginName:string,pass:string):Promise<any>{
         return this.userServo.findByCred(loginName,pass);
     }
@@ -38,6 +41,9 @@ export class DatabaseService {
     }
     updateItem(id:number,updatedData: any):Promise<any>{
         return this.itemServo.updateByID(id,updatedData);
+    }
+    deleteItem(id:number):Promise<any>{
+        return this.itemServo.deleteByID(id);
     }
 
 }

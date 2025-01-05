@@ -40,7 +40,7 @@ export class ItemsService {
     //     }
     //     return {error:"Wrong Crendentials!"};
     // }
-    updateitemByID(updatedData: any){
+    updateItemByID(updatedData: any){
         if (!updatedData.id) {
             return { error: 'Please provide ID!' };
         }
@@ -48,5 +48,11 @@ export class ItemsService {
             return { error: 'Please provide info to update!' };
         }
         return this.database.updateItem(updatedData.id,updatedData);
+    }
+    deleteItemByID(updatedData: any){
+        if (!updatedData.id) {
+            return { error: 'Please provide ID!' };
+        }
+        return this.database.deleteItem(updatedData.id);
     }
 }

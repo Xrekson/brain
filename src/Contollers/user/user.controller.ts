@@ -20,11 +20,19 @@ export class UserController {
     getUsersAll() {
         return this.userServo.getUsersAll();
     }
+
     @UseGuards(LocalGuard)
     @Post('login')
     login(@Req() req: Request) {
         return req.user;
     }
+
+    @UseGuards(JwtGuard)
+    @Post('userChk')
+    userCheck(@Req() req: Request) {
+        return { check:this.userServo.getUserNamesCheck(req.body.loginName)};
+    }
+
     @UseGuards(JwtGuard)
     @Put('updateUser')
     update(@Body() userData: any) {

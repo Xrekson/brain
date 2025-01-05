@@ -31,6 +31,17 @@ export class UserService {
     return result;
   }
 
+  async findAllUserName(): Promise<Set<String>> {
+    let result = await this.userRepo.find({
+      select: ["loginName"],
+    })
+
+    if(result){
+      return new Set(result.map(user => user.loginName.toLowerCase()));
+    }else{
+      return null;
+    }
+  }
   async updateByCred(id:number,pass:string,updatedData: any): Promise<any> {
     let result = await this.userRepo.createQueryBuilder('users')
     .where("users.id = :id", { id: id })

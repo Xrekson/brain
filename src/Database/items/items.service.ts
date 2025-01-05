@@ -42,4 +42,17 @@ export class ItemsService {
             return { error: "Wrong DATA!" };
         }
     }
+
+    async deleteByID(id: number): Promise<any> {
+        let result = await this.itemRepo.findOne({
+            where:{
+                id: id
+            }
+        });
+        if (result) {
+            return await this.itemRepo.delete(result);
+        } else {
+            return { error: "Wrong DATA!" };
+        }
+    }
 }

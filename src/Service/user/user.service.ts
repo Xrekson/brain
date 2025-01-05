@@ -4,7 +4,12 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
-    constructor(private readonly database: DatabaseService,private jwtService: JwtService) { }
+    userNameSet: Set<String>;
+    constructor(private readonly database: DatabaseService,private jwtService: JwtService) {
+        this.database.findAllUserName().then((data)=>{
+            this.userNameSet = data;
+        });
+     }
     userCreation(
         userData: any
     ): any {
@@ -24,6 +29,17 @@ export class UserService {
     }
     getUsersAll() {
         return this.database.findAllUser();
+    }
+    getUserNamesCheck(loginName:String) {
+        if(this.userNameSet){
+            return !this.userNameSet.has(loginName.toLowerCase());
+        }else{
+            this.database.findAllUserName().then((data)=>{
+                this.userNameSet = data;
+            }).then(()=>{
+                this.getUserNamesCheck(loginName);
+            });
+        }
     }
     getUserByUser(loginName:string,password:string) {
         return this.database.loginUser(loginName,password);
